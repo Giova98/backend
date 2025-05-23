@@ -1,0 +1,20 @@
+import Publications from "../models/publication.js";
+
+export const getAll = async () => Publications.findAll();
+
+export const getById = async (id) => Publications.findByPk(id);
+
+export const create = async (data) => Publications.create(data);
+
+export const update = async (id, data) => {
+  const pub = await Publications.findByPk(id);
+  if (!pub) return null;
+  return await pub.update(data);
+};
+
+export const remove = async (id) => {
+  const pub = await Publications.findByPk(id);
+  if (!pub) return null;
+  await pub.destroy();
+  return pub;
+};
