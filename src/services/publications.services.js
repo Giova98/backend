@@ -1,6 +1,21 @@
 import Publications from "../models/publication.js";
+import Category from "../models/category.js";
+import SubCategory from "../models/subCategory.js";
 
-export const getAll = async () => Publications.findAll();
+export const getAll = async () => {
+  return Publications.findAll({
+    include: [
+      {
+        model: Category,
+        attributes: ['ID_Category', 'CategoryName'],
+      },
+      {
+        model: SubCategory,
+        attributes: ['ID_SubCategory', 'NameSubCategory'],
+      }
+    ]
+  });
+};
 
 export const getById = async (id) => Publications.findByPk(id);
 
