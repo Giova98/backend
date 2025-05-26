@@ -1,8 +1,7 @@
-
 import { DataTypes } from "sequelize";
 import sequelize from "../db.js";
 
-const Publications = sequelize.define("Publications", {
+const Publications = sequelize.define("publications", {
   ID_Publication: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -36,9 +35,34 @@ const Publications = sequelize.define("Publications", {
   },
   Sku: {
     type: DataTypes.STRING(100)
+  },
+  ID_Category: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  ID_SubCategory: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   }
 }, {
-  timestamps: false
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: "updated_at"
 });
+
+Publications.associate = (models) => {
+  Publications.belongsTo(models.Category, {
+    foreignKey: 'ID_Category',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+  });
+
+  Publications.belongsTo(models.SubCategory, {
+    foreignKey: 'ID_SubCategory',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+  });
+
+};
 
 export default Publications;

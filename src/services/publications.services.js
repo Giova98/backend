@@ -18,3 +18,10 @@ export const remove = async (id) => {
   await pub.destroy();
   return pub;
 };
+
+export const getLatest = async (limit = 5) => {
+  return await Publications.findAll({
+    order: [["created_at", "DESC"]],
+    limit,
+  });
+};

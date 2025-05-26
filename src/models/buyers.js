@@ -13,21 +13,18 @@ const Buyers = sequelize.define('Buyers', {
   },
   NickName: {
     type: DataTypes.STRING(20),
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   Email: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true,
     validate: {
       isEmail: true
     }
   },
   Passwords: {
     type: DataTypes.STRING(100),
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   RegistrationDate: {
     type: DataTypes.DATEONLY,
@@ -35,16 +32,14 @@ const Buyers = sequelize.define('Buyers', {
   },
   Phone: {
     type: DataTypes.STRING(13),
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   QuantityPurchases: {
     type: DataTypes.INTEGER
   },
   DNI: {
     type: DataTypes.STRING(10),
-    allowNull: false,
-    unique: true
+    allowNull: false
   }
 }, {
   timestamps: false
