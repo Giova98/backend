@@ -1,6 +1,7 @@
-import Publications from "../models/publication.js";
-import Category from "../models/category.js";
-import SubCategory from "../models/subCategory.js";
+
+
+import models from "../models/index.js";
+const { Publications, Category, SubCategory, City, Province } = models;
 
 export const getAll = async () => {
   return Publications.findAll({
@@ -12,6 +13,14 @@ export const getAll = async () => {
       {
         model: SubCategory,
         attributes: ['ID_SubCategory', 'NameSubCategory'],
+      },
+      {
+        model: City,
+        attributes: ['ID_City', 'Name'],
+        include: {
+          model: Province,
+          attributes: ['ID_Province', 'Name']
+        }
       }
     ]
   });
@@ -38,5 +47,23 @@ export const getLatest = async (limit = 5) => {
   return await Publications.findAll({
     order: [["created_at", "DESC"]],
     limit,
+    include: [
+      {
+        model: Category,
+        attributes: ['ID_Category', 'CategoryName'],
+      },
+      {
+        model: SubCategory,
+        attributes: ['ID_SubCategory', 'NameSubCategory'],
+      },
+      {
+        model: City,
+        attributes: ['ID_City', 'Name'],
+        include: {
+          model: Province,
+          attributes: ['ID_Province', 'Name']
+        }
+      }
+    ]
   });
 };

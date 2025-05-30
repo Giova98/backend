@@ -26,8 +26,12 @@ router.get("/publications/latest", async (req, res) => {
 });
 
 router.get("/publications", async (req, res) => {
-  const pubs = await service.getAll();
-  res.json(pubs);
+  try {
+    const pubs = await service.getAll();
+    res.json(pubs);
+  } catch (e) {
+    res.status(500).json({ message: "Error al obtener publicaciones" });
+  }
 });
 
 router.get("/publications/:id", async (req, res) => {

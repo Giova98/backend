@@ -43,6 +43,10 @@ const Publications = sequelize.define("publications", {
   ID_SubCategory: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  ID_City: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   }
 }, {
   timestamps: true,
@@ -63,6 +67,11 @@ Publications.associate = (models) => {
     onUpdate: 'CASCADE',
   });
 
+  Publications.belongsTo(models.City, {
+    foreignKey: 'ID_City',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+  });
 };
 
 export default Publications;
