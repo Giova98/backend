@@ -1,6 +1,6 @@
 
-
 import models from "../models/index.js";
+
 const { Publications, Category, SubCategory, City, Province } = models;
 
 export const getAll = async () => {

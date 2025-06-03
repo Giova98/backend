@@ -38,7 +38,7 @@ const Publications = sequelize.define("publications", {
   },
   ID_Category: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
   },
   ID_SubCategory: {
     type: DataTypes.INTEGER,
@@ -46,7 +46,7 @@ const Publications = sequelize.define("publications", {
   },
   ID_City: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: false
   }
 }, {
   timestamps: true,
