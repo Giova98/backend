@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db.js";
-import Province from "./province.js";
 
 const City = sequelize.define("city", {
     ID_City: {
@@ -21,8 +20,18 @@ const City = sequelize.define("city", {
 });
 
 City.associate = (models) => {
-    City.belongsTo(models.Province, { foreignKey: "ID_Province" });
-    City.hasMany(models.Publications, { foreignKey: "ID_City" });
+    City.belongsTo(models.Province, {
+        foreignKey: 'ID_Province',
+        as: 'Province'
+    });
+
+    City.hasMany(models.Publications, {
+        foreignKey: 'ID_City'
+    });
+
+    City.hasMany(models.Buyers, {
+        foreignKey: 'ID_City'
+    });
 };
 
 export default City;

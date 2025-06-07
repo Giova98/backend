@@ -1,7 +1,7 @@
 
 import models from "../models/index.js";
 
-const { Publications, Category, SubCategory, City, Province } = models;
+const { Publications, Category, SubCategory, City, Province, Sellers, Buyers } = models;
 
 export const getAll = async () => {
   return Publications.findAll({
@@ -16,15 +16,47 @@ export const getAll = async () => {
       },
       {
         model: City,
+        as: 'City',
         attributes: ['ID_City', 'Name'],
         include: {
           model: Province,
+          as: 'Province',
           attributes: ['ID_Province', 'Name']
         }
-      }
+      },
     ]
+
   });
 };
+
+export const getSellerByPublicationId = async (publicationId) => {
+  const publication = await Publications.findByPk(publicationId, {
+    include: {
+      model: Sellers,
+      as: 'Seller',
+      attributes: ['ID_Sellers'],
+      include: {
+        model: Buyers,
+        as: 'Buyer',
+        attributes: ['ID_Buyers', 'BuyersName', 'BuyersLastName', 'NickName', 'Email', 'Phone'],
+        include: {
+          model: City,
+          as: 'City',
+          attributes: ['ID_City', 'Name'],
+          include: {
+            model: Province,
+            as: 'Province',
+            attributes: ['ID_Province', 'Name']
+          }
+        }
+      }
+    }
+  });
+
+  return publication?.Seller || null;
+};
+
+
 
 export const getById = async (id) => Publications.findByPk(id);
 
@@ -58,12 +90,15 @@ export const getLatest = async (limit = 5) => {
       },
       {
         model: City,
+        as: 'City',
         attributes: ['ID_City', 'Name'],
         include: {
           model: Province,
+          as: 'Province',
           attributes: ['ID_Province', 'Name']
         }
       }
+
     ]
   });
 };

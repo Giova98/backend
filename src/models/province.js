@@ -16,7 +16,9 @@ const Province = sequelize.define("province", {
 });
 
 Province.associate = (models) => {
-  Province.hasMany(models.City, { foreignKey: "ID_Province" });
+  Province.hasMany(models.City, {
+    foreignKey: 'ID_Province'
+  });
 };
 
 export default Province;

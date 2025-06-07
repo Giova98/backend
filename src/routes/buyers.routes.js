@@ -1,12 +1,31 @@
 import { Router } from 'express';
-import Buyers from '../models/buyers.js';
+import models, { Sellers } from '../models/index.js';
+const { Buyers, City, Province } = models;
 import jwt from 'jsonwebtoken';
 
 const router = Router();
 
 router.get('/buyers/:id', async (req, res) => {
   try {
-    const buyer = await Buyers.findByPk(req.params.id);
+    const buyer = await Buyers.findByPk(req.params.id, {
+      include: [
+        {
+          model: City,
+          as: 'City',
+          attributes: ['ID_City', 'Name'],
+          include: {
+            model: Province,
+            as: 'Province',
+            attributes: ['ID_Province', 'Name']
+          }
+        },
+        {
+          model: Sellers,
+          as: 'Seller',
+          attributes: ['ID_Sellers']
+        }
+      ]
+    });
     if (buyer) res.json(buyer);
     else res.status(404).json({ error: 'Comprador no encontrado' });
   } catch (err) {
@@ -47,13 +66,33 @@ router.delete('/buyers/:id', async (req, res) => {
   }
 });
 
-const SECRET_KEY = 'aguante-messi';
+const SECRET_KEY = 'chululu';
 
 router.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const buyer = await Buyers.findOne({ where: { Email: email } });
+    const buyer = await Buyers.findOne({
+      where: { Email: email },
+      include: [
+        {
+          model: City,
+          as: 'City',
+          attributes: ['ID_City', 'Name'],
+          include: {
+            model: Province,
+            as: 'Province',
+            attributes: ['ID_Province', 'Name']
+          }
+        },
+        {
+          model: Sellers,
+          as: 'Seller',
+          attributes: ['ID_Sellers']
+        }
+      ]
+    });
+
 
     if (!buyer) {
       return res.status(401).json({ message: 'Email no registrado' });
@@ -74,9 +113,23 @@ router.post('/api/login', async (req, res) => {
       user: {
         id: buyer.ID_Buyers,
         name: buyer.BuyersName,
+        lastname: buyer.BuyersLastName,
         nickname: buyer.NickName,
         email: buyer.Email,
-      },
+        dni: buyer.DNI,
+        phone: buyer.Phone,
+        registrationDate: buyer.RegistrationDate,
+        quantityPurchases: buyer.QuantityPurchases,
+        city: {
+          id: buyer.City.ID_City,
+          name: buyer.City.Name,
+          province: {
+            id: buyer.City.Province.ID_Province,
+            name: buyer.City.Province.Name
+          }
+        },
+        seller: buyer.Seller ? { id: buyer.Seller.ID_Sellers } : null,
+      }
     });
 
   } catch (error) {

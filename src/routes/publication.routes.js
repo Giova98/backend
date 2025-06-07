@@ -1,5 +1,7 @@
 import express from "express";
 import * as service from "../services/publications.services.js";
+import { getSellerByPublicationId } from "../services/publications.services.js";
+
 
 const router = express.Router();
 
@@ -31,6 +33,22 @@ router.get("/publications", async (req, res) => {
     res.json(pubs);
   } catch (e) {
     res.status(500).json({ message: "Error al obtener publicaciones" });
+  }
+});
+
+router.get('/publications/:id/seller', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    
+    if (isNaN(id)) return res.status(400).json({ message: 'ID inválido' });
+
+    const seller = await getSellerByPublicationId(id);
+
+    if (!seller) return res.status(404).json({ message: 'Vendedor no encontrado' });
+
+    res.json(seller);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

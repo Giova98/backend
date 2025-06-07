@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
 import sequelize from '../db.js';
+import { DataTypes } from 'sequelize';
 
 const Buyers = sequelize.define('Buyers', {
   ID_Buyers: {
@@ -8,6 +8,10 @@ const Buyers = sequelize.define('Buyers', {
     primaryKey: true
   },
   BuyersName: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
+  BuyersLastName: {
     type: DataTypes.STRING(100),
     allowNull: false
   },
@@ -40,9 +44,26 @@ const Buyers = sequelize.define('Buyers', {
   DNI: {
     type: DataTypes.STRING(10),
     allowNull: false
+  },
+  ID_City: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 }, {
-  timestamps: false
+  timestamps: false,
+  tableName: 'Buyers'
 });
+
+Buyers.associate = (models) => {
+  Buyers.belongsTo(models.City, {
+    foreignKey: 'ID_City',
+    as: 'City'
+  });
+
+  Buyers.hasOne(models.Sellers, {
+    foreignKey: 'ID_Buyers',
+    as: 'Seller'
+  });
+};
 
 export default Buyers;
