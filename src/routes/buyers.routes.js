@@ -35,7 +35,10 @@ router.get('/buyers/:id', async (req, res) => {
 
 router.post('/buyers', async (req, res) => {
   try {
+    console.log(req.body);
     const newBuyer = await Buyers.create(req.body);
+    console.log(newBuyer);
+    
     res.status(201).json(newBuyer);
   } catch (err) {
     res.status(400).json({ error: err.message });
