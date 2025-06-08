@@ -7,6 +7,10 @@ const Buyers = sequelize.define('Buyers', {
     autoIncrement: true,
     primaryKey: true
   },
+  avatarUrl: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
   BuyersName: {
     type: DataTypes.STRING(100),
     allowNull: false
@@ -45,6 +49,10 @@ const Buyers = sequelize.define('Buyers', {
     type: DataTypes.STRING(10),
     allowNull: false
   },
+  IsAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   ID_City: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -63,6 +71,11 @@ Buyers.associate = (models) => {
   Buyers.hasOne(models.Sellers, {
     foreignKey: 'ID_Buyers',
     as: 'Seller'
+  });
+
+  Buyers.hasMany(models.Order, {
+    foreignKey: 'ID_Buyers',
+    as: 'Orders'
   });
 };
 

@@ -84,6 +84,12 @@ Publications.associate = (models) => {
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
   });
+
+  Publications.hasMany(models.OrderDetail, {
+    foreignKey: 'ID_Publications',
+    as: 'OrderDetails'
+  });
+
 };
 
 export default Publications;

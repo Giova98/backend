@@ -5,10 +5,17 @@ import Province from './province.js';
 import Buyers from './buyers.js';
 import City from './city.js';
 import Sellers from './sellers.js';
+import Contact from './contact.js';
 import sequelize from '../db.js';
+import Order from './order.js';
+import OrderDetail from './orderDetail.js';
+
 
 const models = {
   sequelize,
+  Order,
+  OrderDetail,
+  Contact,
   Sellers,
   Category,
   SubCategory,
@@ -24,6 +31,9 @@ Object.values(models).forEach(model => {
 
 export {
   sequelize,
+  Order,
+  OrderDetail,
+  Contact,
   Sellers,
   Category,
   SubCategory,
