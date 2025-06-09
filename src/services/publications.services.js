@@ -38,7 +38,7 @@ export const getSellerByPublicationId = async (publicationId) => {
       include: {
         model: Buyers,
         as: 'Buyer',
-        attributes: ['ID_Buyers', 'BuyersName', 'BuyersLastName', 'NickName', 'Email', 'Phone'],
+        attributes: ['ID_Buyers', 'avatarUrl', 'BuyersName', 'BuyersLastName', 'NickName', 'Email', 'Phone'],
         include: {
           model: City,
           as: 'City',
@@ -74,6 +74,19 @@ export const remove = async (id) => {
   await pub.destroy();
   return pub;
 };
+
+export async function removeBuyer(id) {
+  try {
+    const buyer = await Buyers.findByPk(id);
+    if (!buyer) return null;
+
+    await buyer.destroy();
+    return buyer;
+  } catch (error) {
+    console.error("Error al eliminar buyer:", error);
+    throw error;
+  }
+}
 
 export const getLatest = async (limit = 5) => {
   return await Publications.findAll({

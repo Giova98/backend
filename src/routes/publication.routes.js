@@ -18,6 +18,15 @@ router.post("/publications", async (req, res) => {
   }
 });
 
+router.get("/admin/publicaciones", async (req, res) => {
+  try {
+    const pubs = await service.getAll();
+    res.json(pubs);
+  } catch (e) {
+    res.status(500).json({ message: "Error al obtener publicaciones (admin)" });
+  }
+});
+
 router.get("/publications/latest", async (req, res) => {
   try {
     const latestPubs = await service.getLatest(5);
@@ -39,7 +48,7 @@ router.get("/publications", async (req, res) => {
 router.get('/publications/:id/seller', async (req, res) => {
   try {
     const id = Number(req.params.id);
-    
+
     if (isNaN(id)) return res.status(400).json({ message: 'ID inválido' });
 
     const seller = await getSellerByPublicationId(id);
@@ -71,5 +80,30 @@ router.delete("/publications/:id", async (req, res) => {
   res.json({ message: "Eliminada correctamente" });
 });
 
+router.delete("/admin/usuarios/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ message: "ID inválido" });
+
+  try {
+    const deleted = await service.removeBuyer(id);
+    if (!deleted) return res.status(404).json({ message: "Usuario no encontrado" });
+    res.json({ message: "Usuario eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar usuario" });
+  }
+});
+
+router.delete("/admin/publicaciones/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ message: "ID inválido" });
+
+  try {
+    const deleted = await service.remove(id);
+    if (!deleted) return res.status(404).json({ message: "Publicación no encontrada" });
+    res.json({ message: "Publicación eliminada correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar publicación" });
+  }
+});
 
 export default router;
