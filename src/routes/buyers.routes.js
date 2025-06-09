@@ -1,10 +1,12 @@
 import { Router } from 'express';
-import models, { Sellers } from '../models/index.js';
-const { Buyers, City, Province } = models;
+import { createSeller } from '../services/buyers.services.js';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import models from '../models/index.js';
+
+const { Buyers, City, Province, Sellers } = models;
 
 const router = Router();
 
@@ -199,6 +201,8 @@ router.get("/admin/usuarios", verifyToken, async (req, res) => {
   const buyers = await Buyers.findAll();
   res.json(buyers);
 });
+
+router.post('/register-seller', createSeller);
 
 export default router;
 
