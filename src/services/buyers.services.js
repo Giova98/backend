@@ -1,6 +1,6 @@
 import models from '../models/index.js';
 
-const { Buyers, Sellers } = models;
+const { Buyers, Sellers, Publications, OrderDetail } = models;
 
 export async function findBuyerById(id) {
   return await Buyers.findByPk(id);
@@ -25,7 +25,7 @@ export async function deleteBuyer(id) {
   await buyer.destroy();
   return buyer;
 }
- export const createSeller = async (req, res) => {
+export const createSeller = async (req, res) => {
   const { buyerId } = req.body; // recibo ID_Buyers del cliente
 
   if (!buyerId) {
@@ -51,3 +51,37 @@ export async function deleteBuyer(id) {
     return res.status(500).json({ message: 'Error al registrar como vendedor.' });
   }
 };
+
+export async function removeBuyer(id) {
+  try {
+    const buyer = await Buyers.findByPk(id);
+    if (!buyer) return null;
+
+    const seller = await Sellers.findOne({ where: { ID_Buyers: id } });
+
+    if (seller) {
+      const publications = await Publications.findAll({
+        where: { ID_Sellers: seller.ID_Sellers },
+      });
+
+      for (const pub of publications) {
+        await OrderDetail.destroy({
+          where: { ID_Publications: pub.ID_Publication },
+        });
+      }
+
+      await Publications.destroy({
+        where: { ID_Sellers: seller.ID_Sellers },
+      });
+
+      await seller.destroy();
+    }
+
+    await buyer.destroy();
+
+    return buyer;
+  } catch (error) {
+    console.error("Error al eliminar buyer:", error);
+    throw error;
+  }
+}
