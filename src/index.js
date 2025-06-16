@@ -8,6 +8,7 @@ import contactRouter from "./routes/contact.routes.js";
 import purchaseRouter from './routes/purchase.routes.js';
 import locationRouter from './routes/location.routes.js';
 import orderRouter from './routes/order.routes.js';
+import categoriesRouter from './routes/categories.routes.js';
 
 import cors from "cors";
 import path from 'path';
@@ -30,6 +31,7 @@ app.use(contactRouter);
 app.use(purchaseRouter);
 app.use(locationRouter);
 app.use(orderRouter);
+app.use(categoriesRouter);
 
 async function main() {
   try {

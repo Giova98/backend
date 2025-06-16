@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createSeller } from '../services/buyers.services.js';
+import { createSeller, removeBuyer } from '../services/buyers.services.js';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
@@ -191,7 +191,7 @@ router.post('/api/login', async (req, res) => {
 });
 
 router.get("/admin/usuarios", verifyToken, async (req, res) => {
-  const userId = req.user?.id; // del token generado en login
+  const userId = req.user?.id;
 
   const user = await Buyers.findByPk(userId);
   if (!user || !user.IsAdmin) {
@@ -200,6 +200,19 @@ router.get("/admin/usuarios", verifyToken, async (req, res) => {
 
   const buyers = await Buyers.findAll();
   res.json(buyers);
+});
+
+router.delete("/admin/usuarios/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ message: "ID inválido" });
+
+  try {
+    const deleted = await removeBuyer(id);
+    if (!deleted) return res.status(404).json({ message: "Usuario no encontrado" });
+    res.json({ message: "Usuario eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar usuario" });
+  }
 });
 
 router.post('/register-seller', createSeller);

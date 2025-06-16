@@ -8,7 +8,7 @@ const SubCategory = sequelize.define("SubCategories", {
     primaryKey: true
   },
   NameSubCategory: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.STRING(100),
     allowNull: false
   },
   ID_Category: {

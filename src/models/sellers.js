@@ -27,7 +27,6 @@ Sellers.associate = (models) => {
   Sellers.belongsTo(models.Buyers, {
     foreignKey: 'ID_Buyers',
     as: 'Buyer',
-    onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
   });
 };
