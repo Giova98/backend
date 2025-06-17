@@ -1,0 +1,10 @@
+-En DetailPublications agregar un button chatear con el vendedor, el cual navegue al chat y al mismo tiempo haga un fetch(post)
+que cree el chat con el vendedor de esa publicacion
+
+-El fetch debe pasar por request y el id_seller que se obtiene de ese mismo componente
+-En el back se debera crear con este fetch(post) el registro en la tabla Chats con los campos (id_buyers = id_seller) y todos
+los demas campos vacios.
+-Crear la tabla mensaje con la foreing key de chats 
+-En el ChatComponents hacemos un fetch(GET) para traer todos los chats, mostrarlos con chatList y mostrar el chat seleccionado.
+-Creamos otro fetch(GET, le pasamos por parametros el id del chat seleccionado (despues lo vemos)), que traiga los mensajes
+del chat seleccionado.

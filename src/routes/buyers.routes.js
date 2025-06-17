@@ -218,4 +218,3 @@ router.delete("/admin/usuarios/:id", async (req, res) => {
 router.post('/register-seller', createSeller);
 
 export default router;
-

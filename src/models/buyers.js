@@ -77,6 +77,10 @@ Buyers.associate = (models) => {
     foreignKey: 'ID_Buyers',
     as: 'Orders'
   });
+  Buyers.hasOne(models.Chats, {
+    foreignKey: 'ID_Buyers',
+    as: 'Chats'
+  });
 };
 
 export default Buyers;

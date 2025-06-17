@@ -9,10 +9,11 @@ import Contact from './contact.js';
 import sequelize from '../db.js';
 import Order from './order.js';
 import OrderDetail from './orderDetail.js';
-
+import Chats from './chats.js';
 
 const models = {
   sequelize,
+  Chats,
   Order,
   OrderDetail,
   Contact,
@@ -22,7 +23,7 @@ const models = {
   Publications,
   Province,
   Buyers,
-  City
+  City,
 };
 
 Object.values(models).forEach(model => {
@@ -31,6 +32,7 @@ Object.values(models).forEach(model => {
 
 export {
   sequelize,
+  Chats,
   Order,
   OrderDetail,
   Contact,
@@ -40,7 +42,7 @@ export {
   Publications,
   Province,
   Buyers,
-  City
+  City,
 };
 
 export default models;
