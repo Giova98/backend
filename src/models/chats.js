@@ -24,6 +24,10 @@ const Chats = sequelize.define('Chats', {
     type: DataTypes.INTEGER,
     foreingKey: true
   },
+  ID_User: {
+    type: DataTypes.INTEGER,
+    foreingKey: true
+  },
   CreatedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
@@ -37,6 +41,12 @@ Chats.associate = (models) => {
   Chats.belongsTo(models.Buyers, {
     foreignKey: 'ID_Buyers',
     as: 'Buyer',
+    onUpdate: 'CASCADE',
+  });
+
+  Chats.belongsTo(models.Buyers, {
+    foreignKey: 'ID_User',
+    as: 'User',
     onUpdate: 'CASCADE',
   });
 };

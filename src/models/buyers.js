@@ -77,9 +77,11 @@ Buyers.associate = (models) => {
     foreignKey: 'ID_Buyers',
     as: 'Orders'
   });
-  Buyers.hasOne(models.Chats, {
-    foreignKey: 'ID_Buyers',
-    as: 'Chats'
+  Buyers.hasMany(models.Chats, {
+    foreignKey: 'ID_Buyers'
+  });
+  Buyers.hasMany(models.Chats, {
+    foreignKey: 'ID_User'
   });
 };
 
