@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createSeller, removeBuyer } from '../services/buyers.services.js';
+import { createSeller, removeBuyer, removeSeller } from '../services/buyers.services.js';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
@@ -75,7 +75,7 @@ router.post('/buyers', async (req, res) => {
     console.log(req.body);
     const newBuyer = await Buyers.create(req.body);
     console.log(newBuyer);
-    
+
     res.status(201).json(newBuyer);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -153,7 +153,7 @@ router.post('/api/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: buyer.ID_Buyers, role: 'buyer', isAdmin: buyer.IsAdmin},
+      { id: buyer.ID_Buyers, role: 'buyer', isAdmin: buyer.IsAdmin },
       SECRET_KEY,
     );
 
@@ -187,6 +187,44 @@ router.post('/api/login', async (req, res) => {
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ message: 'Error del servidor' });
+  }
+});
+
+router.get("/admin/sellers", verifyToken, async (req, res) => {
+  const sellerId = req.user?.id;
+
+  const seller = await Buyers.findByPk(sellerId);
+
+  if (!seller || !seller.IsAdmin) {
+    return res.status(403).json({ message: "Acceso denegado" });
+  }
+
+  try {
+    const sellers = await Buyers.findAll({
+      include: {
+        model: Sellers,
+        as: 'Seller',
+        required: true,
+      },
+    });
+
+    res.json(sellers);
+  } catch (error) {
+    console.error("Error al obtener los vendedores", error);
+    res.status(500).json({ message: "Error al obtener los vendedores" });
+  }
+});
+
+router.delete("/admin/seller/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ message: "ID inválido" });
+
+  try {
+    const deleted = await removeSeller(id);
+    if (!deleted) return res.status(404).json({ message: "vendedor no encontrado" });
+    res.json({ message: "vendedor eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar vendedor" });
   }
 });
 

@@ -25,12 +25,9 @@ export async function deleteBuyer(id) {
   await buyer.destroy();
   return buyer;
 }
-export const createSeller = async (req, res) => {
-  const { buyerId } = req.body; // recibo ID_Buyers del cliente
 
-  if (!buyerId) {
-    return res.status(400).json({ message: 'Debe enviar el ID del comprador.' });
-  }
+export const createSeller = async (req, res) => {
+  const { buyerId } = req.body;
 
   try {
     const existingSeller = await Sellers.findOne({ where: { ID_Buyers: buyerId } });
@@ -78,6 +75,38 @@ export async function removeBuyer(id) {
     }
 
     await buyer.destroy();
+
+    return buyer;
+  } catch (error) {
+    console.error("Error al eliminar buyer:", error);
+    throw error;
+  }
+}
+
+export async function removeSeller(id) {
+  try {
+    const buyer = await Buyers.findByPk(id);
+    if (!buyer) return null;
+
+    const seller = await Sellers.findOne({ where: { ID_Buyers: id } });
+
+    if (seller) {
+      const publications = await Publications.findAll({
+        where: { ID_Sellers: seller.ID_Sellers },
+      });
+
+      for (const pub of publications) {
+        await OrderDetail.destroy({
+          where: { ID_Publications: pub.ID_Publication },
+        });
+      }
+
+      await Publications.destroy({
+        where: { ID_Sellers: seller.ID_Sellers },
+      });
+
+      await seller.destroy();
+    }
 
     return buyer;
   } catch (error) {
