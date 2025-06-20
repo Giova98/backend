@@ -1,6 +1,7 @@
+import { where } from 'sequelize';
 import models from '../models/index.js';
 
-const { Buyers, Sellers, Publications, OrderDetail } = models;
+const { Buyers, Sellers, Publications, OrderDetail, Chats } = models;
 
 export async function findBuyerById(id) {
   return await Buyers.findByPk(id);
@@ -74,6 +75,9 @@ export async function removeBuyer(id) {
       await seller.destroy();
     }
 
+    await Chats.destroy({
+      where: {ID_User: id}
+    });
     await buyer.destroy();
 
     return buyer;

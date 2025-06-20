@@ -42,12 +42,14 @@ Chats.associate = (models) => {
     foreignKey: 'ID_Buyers',
     as: 'Buyer',
     onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
   });
 
   Chats.belongsTo(models.Buyers, {
     foreignKey: 'ID_User',
     as: 'User',
     onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
   });
 };
 
