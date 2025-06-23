@@ -1,6 +1,5 @@
-// models/Contact.js
-import sequelize from '../db.js'
-import { DataTypes } from 'sequelize'
+import sequelize from '../db.js';
+import { DataTypes } from 'sequelize';
 
 const Chats = sequelize.define('Chats', {
   ID_Chat: {
@@ -8,25 +7,13 @@ const Chats = sequelize.define('Chats', {
     autoIncrement: true,
     primaryKey: true
   },
-  sender: {
-    type: DataTypes.STRING(100),
-    allowNull: true
-  },
-  time: {
-    type: DataTypes.STRING(20),
-    allowNull: true
-  },
-  text: {
-    type: DataTypes.TEXT('long'),
-    allowNull: true,
-  },
   ID_Buyers: {
     type: DataTypes.INTEGER,
-    foreingKey: true
+    allowNull: false
   },
   ID_User: {
     type: DataTypes.INTEGER,
-    foreingKey: true
+    allowNull: false
   },
   CreatedAt: {
     type: DataTypes.DATE,
@@ -35,7 +22,7 @@ const Chats = sequelize.define('Chats', {
 }, {
   timestamps: false,
   tableName: 'Chats'
-})
+});
 
 Chats.associate = (models) => {
   Chats.belongsTo(models.Buyers, {
@@ -49,6 +36,12 @@ Chats.associate = (models) => {
     foreignKey: 'ID_User',
     as: 'User',
     onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
+  });
+
+  Chats.hasMany(models.Messages, {
+    foreignKey: 'ID_Chat',
+    as: 'messages',
     onDelete: 'CASCADE'
   });
 };
