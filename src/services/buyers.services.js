@@ -91,6 +91,18 @@ export async function removeBuyer(id) {
   }
 }
 
+export async function createsBuyer(data) {
+  const existingBuyer = await Buyers.findOne({
+    where: { Email: data.Email }
+  });
+
+  if (existingBuyer) {
+    throw new Error('El email ya está registrado');
+  }
+
+  return await Buyers.create(data);
+}
+
 export async function removeSeller(id) {
   try {
     const buyer = await Buyers.findByPk(id);
