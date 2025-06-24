@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createSeller, removeBuyer, removeSeller } from '../services/buyers.services.js';
+import { createSeller, removeBuyer, removeSeller, createsBuyer } from '../services/buyers.services.js';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
@@ -72,9 +72,7 @@ router.get('/buyers/:id', async (req, res) => {
 
 router.post('/buyers', async (req, res) => {
   try {
-    console.log(req.body);
-    const newBuyer = await Buyers.create(req.body);
-    console.log(newBuyer);
+    const newBuyer = await createsBuyer(req.body);
 
     res.status(201).json(newBuyer);
   } catch (err) {

@@ -7,10 +7,6 @@ export async function findBuyerById(id) {
   return await Buyers.findByPk(id);
 }
 
-export async function createBuyer(data) {
-  return await Buyers.create(data);
-}
-
 export async function updateBuyer(id, data) {
   const buyer = await Buyers.findByPk(id);
   if (!buyer) return null;
@@ -85,6 +81,18 @@ export async function removeBuyer(id) {
     console.error("Error al eliminar buyer:", error);
     throw error;
   }
+}
+
+export async function createsBuyer(data) {
+  const existingBuyer = await Buyers.findOne({
+    where: { Email: data.Email }
+  });
+
+  if (existingBuyer) {
+    throw new Error('El email ya está registrado');
+  }
+
+  return await Buyers.create(data);
 }
 
 export async function removeSeller(id) {
