@@ -22,9 +22,8 @@ app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Servir imágenes estáticas
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-app.use(express.json({ limit: '30mb' }));
+app.use(express.json({ limit: '2mb' }));
 
 app.use(publicationRouter);
 app.use(buyerRouter);

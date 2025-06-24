@@ -3,7 +3,7 @@ import * as service from "../services/publications.services.js";
 import { getSellerByPublicationId, createPublication } from "../services/publications.services.js";
 import models from "../models/index.js";
 
-const { Publications, Category, SubCategory, City, Sellers, Buyers } = models;
+const { Publications, Category, SubCategory, City, Province, Sellers, Buyers } = models;
 
 
 const router = express.Router();
@@ -44,7 +44,13 @@ router.get('/seller/:sellerId', async (req, res) => {
       include: [
         { model: Category, },
         { model: SubCategory },
-        { model: City, as: 'City' },
+        {
+          model: City, as: 'City', include: [{
+            model: Province,
+            as: 'Province',
+            attributes: ['ID_Province', 'Name']
+          }]
+        },
         { model: Sellers, as: 'Seller', include: [{ model: Buyers, as: 'Buyer' }] }
       ]
     });

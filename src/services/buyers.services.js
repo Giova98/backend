@@ -1,14 +1,10 @@
 import { where } from 'sequelize';
 import models from '../models/index.js';
 
-const { Buyers, Sellers, Publications, OrderDetail, Chats } = models;
+const { Buyers, Sellers, Publications, OrderDetail, Chats, Messages } = models;
 
 export async function findBuyerById(id) {
   return await Buyers.findByPk(id);
-}
-
-export async function createBuyer(data) {
-  return await Buyers.create(data);
 }
 
 export async function updateBuyer(id, data) {
@@ -75,9 +71,17 @@ export async function removeBuyer(id) {
       await seller.destroy();
     }
 
-    await Chats.destroy({
-      where: {ID_User: id}
+    await Messages.destroy({
+      where: { sender_id: id}
     });
+
+    await Chats.destroy({
+      where: { 
+        ID_User: id,
+        ID_Buyers: id
+       }
+    });
+
     await buyer.destroy();
 
     return buyer;

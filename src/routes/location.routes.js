@@ -4,7 +4,6 @@ import models from '../models/index.js';
 const router = express.Router();
 const { Province, City } = models;
 
-// 1. Traer todas las provincias con sus ciudades
 router.get('/provincias-ciudades', async (req, res) => {
     try {
         const provincias = await Province.findAll({
@@ -22,7 +21,6 @@ router.get('/provincias-ciudades', async (req, res) => {
     }
 });
 
-// 2. Traer ciudades por ID de provincia
 router.get('/ciudades/:provinciaId', async (req, res) => {
     try {
         const { provinciaId } = req.params;
