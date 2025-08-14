@@ -1,5 +1,7 @@
 # 🔧 CarpinChords – Backend
 
+Este repositorio es un 'fork' del proyecto original, creado como trabajo final para el cuatrimestre pasado de la tecnicatura en programación. Representa la versión del proyecto completada por el equipo al finalizar el curso. Las contribuciones posteriores en el repositorio original no forman parte de esta versión.
+
 Este repositorio contiene el backend de **CarpinChords**, desarrollado con **Node.js**, **Express** y **Sequelize**.  
 Se encarga de la gestión de usuarios, publicaciones, órdenes de compra, mensajería, carga de imágenes y más.
 
